@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+single-product-container {
+  display: flex;
+  flex-direction: row;
+  color: red;
+}
+
+single-product-specs {
+  color: red;
+}
