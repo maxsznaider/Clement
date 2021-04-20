@@ -3,15 +3,17 @@ import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { addToStoreCart } from "../store/currentCartItems"
-import { toggleRefresh } from "../store/navBarRefresh";
+import { addToNotLoggedInCart } from "../store/notLoggedInCartItems"
 
 const SingleProduct = (props) => {
   const [quantity, setQuantity] = useState(1)
   const [product, setProduct] = useState("loading")
   const currentCart = useSelector((state) => state.currentCart)
+  const currentCartItems = useSelector((state) => state.currentCartItems)
   const currentUser = useSelector((state) => state.currentUser)
-  const [notLoggedCart, setnotLoggedCart] = useState();
-  const [variable, setVariable] = useState(1);
+  const notLoggedInCartItems = useSelector(
+    (state) => state.notLoggedInCartItems
+  )
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -34,38 +36,24 @@ const SingleProduct = (props) => {
     return () => setProduct("loading")
   }, [])
 
-  React.useEffect(() => {
-    localStorage.getItem("notLoggedCart")
-      ? setnotLoggedCart(JSON.parse(localStorage.getItem("notLoggedCart")))
-      : setnotLoggedCart([]);
-  }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("notLoggedCart", JSON.stringify(notLoggedCart));
-  }, [notLoggedCart, variable]);
-
   const addToCart = function () {
-    let indice;
-    if(!currentUser) {
-      history.push("/login")
-    //   notLoggedCart.map((cartItem, index) => {
-    //     if (cartItem.productId == product.id) {
-    //       indice = index;
-    //     }
-    //   })
-    //   if(indice == undefined){
-    //   setnotLoggedCart((state) => [...state, {
-    //     name: product.name,
-    //     urlPicture: product.urlPicture,
-    //     price: product.price,
-    //     quantity: quantity,
-    //     productId: product.id,
-    //   }]);
-    // } else {
-    //   notLoggedCart[indice].quantity += 1
-    //   setVariable(variable + 1)
-    // }
-    //   dispatch(toggleRefresh());
+    let newQuantity
+    if (!currentUser) {
+      let existingItem = currentCartItems.find(
+        (cartItem) => cartItem.productId === product.id
+      )
+      existingItem && console.log(existingItem.quantity)
+      if (existingItem) newQuantity = existingItem.quantity + quantity
+      console.log(newQuantity)
+      dispatch(
+        addToStoreCart({
+          name: product.name,
+          urlPicture: product.urlPicture,
+          price: product.price,
+          quantity: newQuantity || quantity,
+          productId: product.id,
+        })
+      )
     }
     else {
       axios
@@ -175,7 +163,6 @@ const SingleProduct = (props) => {
                   </button>
                 </>
               )}
-              {/* <div>Discount:</div> */}
             </div>
           </div>
         </div>

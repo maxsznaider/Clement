@@ -4,6 +4,7 @@ import logger from "redux-logger"
 import { currentUserReducer } from "./currentUser"
 import { currentCartReducer } from "./currentCart"
 import { currentCartItemsReducer } from "./currentCartItems"
+import { notLoggedInCartItemsReducer } from "./notLoggedInCartItems"
 import { yearsReducer } from "./years"
 import { countriesReducer } from "./countries"
 import { typesReducer } from "./types"
@@ -23,6 +24,7 @@ const store = configureStore({
     countries: countriesReducer,
     types: typesReducer,
     refresh: refreshReducer,
+    notLoggedInCartItems: notLoggedInCartItemsReducer,
     // localItems: localItemsReducer,
   },
 })

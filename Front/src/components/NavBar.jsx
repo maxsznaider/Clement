@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { Link } from "react-router-dom"
-import axios from "axios"
 import { getCurrentUser } from "../store/currentUser"
 import { loadStoreCart } from "../store/currentCart"
 import { clearStoreCart } from "../store/currentCartItems"
@@ -11,15 +10,12 @@ import CategoryDropdown from "./CategoryDropdown"
 const NavBar = () => {
   const currentCartItems = useSelector((state) => state.currentCartItems)
   const currentUser = useSelector((state) => state.currentUser)
+  const notLoggedInCartItems = useSelector(
+    (state) => state.notLoggedInCartItems
+  )
   const [searchQuery, setSearchQuery] = useState("")
   const dispatch = useDispatch()
   const history = useHistory()
-  const [localItems, setLocalItems] = useState(
-    JSON.parse(localStorage.getItem("notLoggedCart"))
-  )
-  const refresh = useSelector((state) => state.refresh)
-
-  useEffect(() => {}, [refresh])
 
   const token = localStorage.getItem("token")
 
@@ -41,29 +37,33 @@ const NavBar = () => {
     history.push("/")
   }
 
-  React.useEffect(() => {}, [token])
-
   return (
     <div className="navbar-container">
       <div className="navbar-first-row-container">
         <div className="navbar-first-row">
           <div className="logo-container">
             <Link to="/">
-            <div className="logo">Clement</div>
+              <div className="logo">Clement</div>
             </Link>
             <div className="logo-tagline">online wine shop</div>
           </div>
           <div className="search-and-log-in">
             <div className="search">
               {/* <img className="search-icon" src="icons/search.png"></img> */}
-              {currentUser.isAdmin ? <div className="navbar-admin-control-panel">Admin Control Panel</div> : <form onSubmit={handleSubmit}>
-                <input
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="search"
-                  value={searchQuery}
-                />
-              </form>}
+              {currentUser.isAdmin ? (
+                <div className="navbar-admin-control-panel">
+                  Admin Control Panel
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <input
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="search"
+                    value={searchQuery}
+                  />
+                </form>
+              )}
             </div>
             {token ? (
               <div className="logged-in">
@@ -82,9 +82,9 @@ const NavBar = () => {
                   </div>
                 ) : null}
                 {currentUser.isAdmin ? null : (
-                    <Link to="/history">
-                      <button>Orders</button>
-                    </Link>
+                  <Link to="/history">
+                    <button>Orders</button>
+                  </Link>
                 )}
                 <button onClick={handleLogout}>Log Out</button>
               </div>
@@ -102,6 +102,18 @@ const NavBar = () => {
                     )}
                   </div>
                 ) : null} */}
+                <Link to="/cart">
+                  <button>Cart</button>
+                </Link>
+                {currentCartItems.length ? (
+                  <div className="cart-quantity">
+                    {currentCartItems.reduce(
+                      (accumulator, currentValue) =>
+                        accumulator + Number(currentValue.quantity),
+                      0
+                    )}
+                  </div>
+                ) : null}
                 <Link to="/login">
                   <button>Log In</button>
                 </Link>

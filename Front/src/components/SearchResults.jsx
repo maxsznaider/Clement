@@ -3,29 +3,27 @@ import axios from "axios"
 import { Link, useHistory, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { addToStoreCart } from "../store/currentCartItems"
-import { toggleRefresh } from "../store/navBarRefresh";
-import { setLocalItems } from "../store/locaItems"
+import { addToNotLoggedInCart } from "../store/notLoggedInCartItems"
 
 const SearchResults = (props) => {
   const [products, setProducts] = useState("loading")
   const currentCart = useSelector((state) => state.currentCart)
   const currentUser = useSelector((state) => state.currentUser)
-  const localItems = useSelector(state => state.localItems)
+  const currentCartItems = useSelector((state) => state.currentCartItems)
+  const notLoggedInCartItems = useSelector(
+    (state) => state.notLoggedInCartItems
+  )
+  const localItems = useSelector((state) => state.localItems)
   const dispatch = useDispatch()
   const history = useHistory()
   const [title, setTitle] = useState("")
-  const [notLoggedCart, setnotLoggedCart] = useState();
-  const [variable, setVariable] = useState(1);
 
-  // const products = [{name: "Pepe", price: 25, brand: "Pepe"}]
-
-  const search = useLocation().search;
-  const q = new URLSearchParams(search).get('q')
-  const m = new URLSearchParams(search).get('m');
+  const search = useLocation().search
+  const q = new URLSearchParams(search).get("q")
+  const m = new URLSearchParams(search).get("m")
   React.useEffect(() => {
     axios
       .get(`/api/products/search?q=${q}&m=${m}`)
-      // .get(`/api/search/${props.match.params.query}`)
       .then(({ data }) => {
         setProducts(data.products)
         setTitle(data.model)
@@ -34,38 +32,22 @@ const SearchResults = (props) => {
     return () => setProducts("loading")
   }, [q, m])
 
-  React.useEffect(() => {
-    localStorage.getItem("notLoggedCart")
-      ? setnotLoggedCart(JSON.parse(localStorage.getItem("notLoggedCart")))
-      : setnotLoggedCart([]);
-  }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("notLoggedCart", JSON.stringify(notLoggedCart));
-  }, [notLoggedCart, variable]);
-
   const addToCart = function (product) {
-    let indice;
     if (!currentUser) {
-      history.push("/login")
-    //   notLoggedCart.map((cartItem, index) => {
-    //     if (cartItem.productId == product.id) {
-    //       indice = index;
-    //     }
-    //   })
-    //   if(indice == undefined){
-    //   setnotLoggedCart((state) => [...state, {
-    //     name: product.name,
-    //     urlPicture: product.urlPicture,
-    //     price: product.price,
-    //     quantity: 1,
-    //     productId: product.id,
-    //   }]);
-    // } else {
-    //   notLoggedCart[indice].quantity += 1
-    //   setVariable(variable + 1)
-    // }
-    //   dispatch(toggleRefresh())
+      let existingItem = currentCartItems.find(
+        (cartItem) => cartItem.productId === product.id
+      )
+      existingItem && console.log(existingItem.quantity)
+      if (existingItem) product.quantity = existingItem.quantity + 1
+      dispatch(
+        addToStoreCart({
+          name: product.name,
+          urlPicture: product.urlPicture,
+          price: product.price,
+          quantity: product.quantity || 1,
+          productId: product.id,
+        })
+      )
     } else
       axios
         .post("/api/transactionitems", {
@@ -84,8 +66,8 @@ const SearchResults = (props) => {
               id: transactionItem.data.id,
             })
           )
-        );
-  };
+        )
+  }
 
   return (
     <>
@@ -99,8 +81,10 @@ const SearchResults = (props) => {
               <div key={index} className="single-result">
                 <div className="picture-container">
                   <Link to={`/products/${product.id}`}>
-                    <img className="single-result-picture"
-                    src={product.urlPicture} />
+                    <img
+                      className="single-result-picture"
+                      src={product.urlPicture}
+                    />
                   </Link>
                 </div>
                 <hr />

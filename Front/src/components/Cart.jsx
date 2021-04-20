@@ -6,24 +6,13 @@ import { useSelector, useDispatch } from "react-redux"
 import {
   removeFromStoreCart,
   changeQuantityInStoreCart,
-  currentCartItemsReducer,
 } from "../store/currentCartItems"
-import { toggleRefresh } from "../store/navBarRefresh"
-
 
 const Cart = () => {
   let currentCartItems = useSelector((state) => state.currentCartItems)
   const [total, setTotal] = useState(0)
-  const currentUser = useSelector(state => state.currentUser);
+  const currentUser = useSelector((state) => state.currentUser)
   const dispatch = useDispatch()
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem('notLoggedCart')));
-  const [elEstornudoDeFede, setelEstornudoDeFede] = useState(1)
-
-  !currentUser ? currentCartItems = items : null;
-
-  React.useEffect(() => {
-    if(!currentUser) localStorage.setItem('notLoggedCart', JSON.stringify(items))
-  }, [elEstornudoDeFede])
 
   React.useEffect(() => {
     setTotal(
@@ -38,46 +27,43 @@ const Cart = () => {
   }, [currentCartItems])
 
   const removeFromCart = function (cartItem) {
-    if(!currentUser){
-      let varItems = items;
-      let indice;
-      varItems.map((item, index) => {
-        if(item.productId == cartItem.productId){
-          indice = index
-        }
-      });
-      varItems.splice(indice, 1)
-      setItems(varItems)
-      setelEstornudoDeFede(elEstornudoDeFede + 1)
-      dispatch(toggleRefresh());
-    } else{
-    axios
-      .delete("/api/transactionitems/" + cartItem.id)
-      .then(() =>
-        dispatch(
-          removeFromStoreCart({
-            id: cartItem.id,
-          })
-        )
-      )}
+    if (!currentUser)
+      dispatch(removeFromStoreCart({ productId: cartItem.productId }))
+    else axios.delete("/api/transactionitems/" + cartItem.id).then(() =>
+      dispatch(
+        removeFromStoreCart({
+          productId: cartItem.productId,
+        })
+      )
+    )
   }
 
   const changeQuantity = function (cartItem, quantity) {
+    quantity = Number(quantity)
     let { id, productId } = cartItem
-    if (quantity && quantity > 0) {
-      axios
-        .put("/api/transactionitems/quantity", {
-          id: id,
-          quantity: quantity,
-        })
-        .then(() =>
-          dispatch(
-            changeQuantityInStoreCart({
-              productId,
-              quantity,
-            })
-          )
+    if (quantity === 0) removeFromCart(cartItem)
+    if (quantity > 0) {
+      if (!currentUser)
+        dispatch(
+          changeQuantityInStoreCart({
+            productId,
+            quantity,
+          })
         )
+      else
+        axios
+          .put("/api/transactionitems/quantity", {
+            id: id,
+            quantity: quantity,
+          })
+          .then(() =>
+            dispatch(
+              changeQuantityInStoreCart({
+                productId,
+                quantity,
+              })
+            )
+          )
     }
   }
 
@@ -126,7 +112,7 @@ const Cart = () => {
           ))}
           <div className="cart-total">
             <div className="cart-total-amount">Order Total: ${total}</div>
-            <Link to={currentUser ? '/checkout' : '/login'}>
+            <Link to={currentUser ? "/checkout" : "/login"}>
               <button>Checkout</button>
             </Link>
           </div>

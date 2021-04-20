@@ -43,9 +43,10 @@ router.post('/localstorage', (req, res) => {
         })
             .then((transactionItem) => {
                 if (!transactionItem) {
+                    console.log("Hola")
                     TransactionItem.create(item)
                         .then(transactionItemCreated => transactionItemCreated.setTransaction(req.body.transactionId))
-                        .then(transactionItemCreated => transactionItemCreated.setProduct(req.body.productId))
+                        .then(transactionItemCreated => transactionItemCreated.setProduct(item.productId))
                         .then(() => {
                             index--
                             index === 0 && res.sendStatus(200);
@@ -55,7 +56,7 @@ router.post('/localstorage', (req, res) => {
                     transactionItem
                         .update({
                             quantity:
-                                Number(req.body.quantity) + Number(transactionItem.quantity),
+                                Number(item.quantity) + Number(transactionItem.quantity),
                         })
                         .then(() => {
                             index--

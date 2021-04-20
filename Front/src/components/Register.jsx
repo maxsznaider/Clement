@@ -10,13 +10,16 @@ const NewUser = () => {
   const [name, setName] = useState("")
   const [lastName, setLastName] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
   const currentUser = useSelector((state) => state.currentUser)
+  const [showButtonSpinner, setShowButtonSpinner] = useState(false)
 
   const dispatch = useDispatch()
   const history = useHistory()
 
   const handleSubmit = function (event) {
     event.preventDefault()
+    setShowButtonSpinner(true)
     axios
       .post("/api/users/register", {
         email,
@@ -27,11 +30,22 @@ const NewUser = () => {
       .then((newUser) => {
         console.log(newUser)
         localStorage.setItem("token", newUser.data.token)
-        dispatch(getCurrentUser({ id: newUser.data.user.id, isAdmin: newUser.data.user.isAdmin }))
-        if(newUser.data.user.isAdmin) history.push("/")
+        dispatch(
+          getCurrentUser({
+            id: newUser.data.user.id,
+            isAdmin: newUser.data.user.isAdmin,
+          })
+        )
+        if (newUser.data.user.isAdmin) history.push("/")
         else history.goBack()
       })
+      .catch((error) => {
+        setShowButtonSpinner(false)
+        setError(error.response.data)
+      })
   }
+
+  const Error = () => <div className="sign-up-or-log-in-error">{error}</div>
 
   // React.useEffect(() => {
   //   if(currentUser) axios
@@ -75,8 +89,15 @@ const NewUser = () => {
           name="password"
           onChange={(event) => setPassword(event.target.value)}
         />
-        <button>Sign Up</button>
+        <button>
+          {showButtonSpinner ? (
+            <div className="small-spinner"></div>
+          ) : (
+            "Sign Up"
+          )}
+        </button>
       </form>
+      {error && <Error />}
     </div>
   )
 }
