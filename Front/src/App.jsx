@@ -3,7 +3,6 @@ import NavBar from "./components/NavBar"
 import Footer from "./components/Footer.jsx"
 import Home from "./components/Home"
 import SingleProduct from "./components/SingleProduct.jsx"
-import AllProducts from "./components/AllProducts.jsx"
 import SearchResults from "./components/SearchResults"
 import Register from "./components/Register.jsx"
 import Login from "./components/Login.jsx"
@@ -31,12 +30,9 @@ const App = () => {
   const types = useSelector((state) => state.types)
   const years = useSelector((state) => state.years)
   const countries = useSelector((state) => state.countries)
-  const notLoggedInCartItems = useSelector(
-    (state) => state.notLoggedInCartItems
-  )
+
   const token = localStorage.getItem("token")
   const dispatch = useDispatch()
-  const localStorageCart = JSON.parse(localStorage.getItem("localStorageCart"))
 
   useEffect(() => {
     if (!currentUser && token) {
@@ -128,7 +124,6 @@ const App = () => {
             path="/products/:id"
             render={({ match }) => <SingleProduct match={match} />}
           />
-          <Route path="/products/" render={() => <AllProducts />} />
           <Route
             path="/search"
             render={({ match }) => <SearchResults match={match} />}

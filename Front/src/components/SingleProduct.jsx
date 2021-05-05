@@ -3,7 +3,6 @@ import axios from "axios"
 import { useSelector, useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { addToStoreCart } from "../store/currentCartItems"
-import { addToNotLoggedInCart } from "../store/notLoggedInCartItems"
 
 const SingleProduct = (props) => {
   const [quantity, setQuantity] = useState(1)
@@ -11,9 +10,6 @@ const SingleProduct = (props) => {
   const currentCart = useSelector((state) => state.currentCart)
   const currentCartItems = useSelector((state) => state.currentCartItems)
   const currentUser = useSelector((state) => state.currentUser)
-  const notLoggedInCartItems = useSelector(
-    (state) => state.notLoggedInCartItems
-  )
 
   const dispatch = useDispatch()
   const history = useHistory()

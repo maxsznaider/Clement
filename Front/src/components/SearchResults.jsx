@@ -3,17 +3,12 @@ import axios from "axios"
 import { Link, useHistory, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { addToStoreCart } from "../store/currentCartItems"
-import { addToNotLoggedInCart } from "../store/notLoggedInCartItems"
 
 const SearchResults = (props) => {
   const [products, setProducts] = useState("loading")
   const currentCart = useSelector((state) => state.currentCart)
   const currentUser = useSelector((state) => state.currentUser)
   const currentCartItems = useSelector((state) => state.currentCartItems)
-  const notLoggedInCartItems = useSelector(
-    (state) => state.notLoggedInCartItems
-  )
-  const localItems = useSelector((state) => state.localItems)
   const dispatch = useDispatch()
   const history = useHistory()
   const [title, setTitle] = useState("")
@@ -37,7 +32,6 @@ const SearchResults = (props) => {
       let existingItem = currentCartItems.find(
         (cartItem) => cartItem.productId === product.id
       )
-      existingItem && console.log(existingItem.quantity)
       if (existingItem) product.quantity = existingItem.quantity + 1
       dispatch(
         addToStoreCart({

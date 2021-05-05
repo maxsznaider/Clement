@@ -67,6 +67,19 @@ const Cart = () => {
     }
   }
 
+// useInput que quizás sirve para los items del carrito
+
+  const useInput = (name, incomingValue) => {
+    const [value, setValue] = useState(incomingValue);
+
+    const onChange = ({ target: { value } }) => {
+        setFormError("")
+        setValue(value)
+    };
+
+    return { value, onChange, name };
+};
+
   return (
     <>
       {currentCartItems && currentCartItems.length ? (

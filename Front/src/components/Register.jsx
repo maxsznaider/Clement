@@ -1,8 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { getCurrentUser } from "../store/currentUser"
-import { loadStoreCart } from "../store/currentCart"
 import { useHistory } from "react-router-dom"
 
 const NewUser = () => {
@@ -11,7 +10,6 @@ const NewUser = () => {
   const [lastName, setLastName] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const currentUser = useSelector((state) => state.currentUser)
   const [showButtonSpinner, setShowButtonSpinner] = useState(false)
 
   const dispatch = useDispatch()
@@ -46,17 +44,6 @@ const NewUser = () => {
   }
 
   const Error = () => <div className="sign-up-or-log-in-error">{error}</div>
-
-  // React.useEffect(() => {
-  //   if(currentUser) axios
-  //     .post("/api/transactions", {
-  //       userId: currentUser.id,
-  //     })
-  //     .then((cart) => {
-  //       dispatch(loadStoreCart({ id: cart.data.id }))
-  //       history.push("/products")
-  //     })
-  // }, [currentUser])
 
   return (
     <div className="sign-up-or-log-in">

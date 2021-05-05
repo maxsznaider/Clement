@@ -4,12 +4,9 @@ import logger from "redux-logger"
 import { currentUserReducer } from "./currentUser"
 import { currentCartReducer } from "./currentCart"
 import { currentCartItemsReducer } from "./currentCartItems"
-import { notLoggedInCartItemsReducer } from "./notLoggedInCartItems"
 import { yearsReducer } from "./years"
 import { countriesReducer } from "./countries"
 import { typesReducer } from "./types"
-import { refreshReducer } from "./navBarRefresh"
-// import { localItemsReducer } from "./locaItems"
 
 const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -23,9 +20,6 @@ const store = configureStore({
     years: yearsReducer,
     countries: countriesReducer,
     types: typesReducer,
-    refresh: refreshReducer,
-    notLoggedInCartItems: notLoggedInCartItemsReducer,
-    // localItems: localItemsReducer,
   },
 })
 

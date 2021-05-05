@@ -1,9 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
 import { getCurrentUser } from "../store/currentUser"
-import { useSelector, useDispatch } from "react-redux"
-import { loadStoreCart } from "../store/currentCart"
-import { loadStoreCartItems } from "../store/currentCartItems"
+import { useDispatch } from "react-redux"
 import { useHistory, Link } from "react-router-dom"
 
 const Login = () => {
@@ -13,9 +11,6 @@ const Login = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const [showButtonSpinner, setShowButtonSpinner] = useState(false)
-
-  const currentUser = useSelector((state) => state.currentUser)
-  const currentCart = useSelector((state) => state.currentCart)
 
   const handleSubmit = function (event) {
     event.preventDefault()
@@ -41,28 +36,6 @@ const Login = () => {
         setError(error.response.data)
       })
   }
-
-  // React.useEffect(() => {
-  //   if (currentUser)
-  //     axios
-  //       .post("/api/transactions", {
-  //         userId: currentUser.id,
-  //       })
-  //       .then((cart) => {
-  //         dispatch(loadStoreCart({ id: cart.data.id }))
-  //       })
-  // }, [currentUser])
-
-  // React.useEffect(() => {
-  //   if (currentCart !== "loading")
-  //     axios
-  //       .put("/api/transactionitems/load", {
-  //         transactionId: currentCart.id,
-  //       })
-  //       .then((cartItems) => {
-  //         dispatch(loadStoreCartItems(cartItems.data))
-  //       })
-  // }, [currentCart])
 
   React.useEffect(() => {
     setError(false)

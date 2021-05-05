@@ -10,9 +10,6 @@ import CategoryDropdown from "./CategoryDropdown"
 const NavBar = () => {
   const currentCartItems = useSelector((state) => state.currentCartItems)
   const currentUser = useSelector((state) => state.currentUser)
-  const notLoggedInCartItems = useSelector(
-    (state) => state.notLoggedInCartItems
-  )
   const [searchQuery, setSearchQuery] = useState("")
   const dispatch = useDispatch()
   const history = useHistory()
