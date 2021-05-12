@@ -105,7 +105,6 @@ const Checkout = () => {
         userId: currentUser.id,
       })
       .then((newPayment) => {
-        console.log(newPayment)
         setCards([...cards, newPayment.data])
         console.log(cards)
         setFullname("")

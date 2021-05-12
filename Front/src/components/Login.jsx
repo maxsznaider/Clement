@@ -3,6 +3,7 @@ import axios from "axios"
 import { getCurrentUser } from "../store/currentUser"
 import { useDispatch } from "react-redux"
 import { useHistory, Link } from "react-router-dom"
+import { validateEmail } from "../../utils/methods"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -10,31 +11,43 @@ const Login = () => {
   const [error, setError] = useState("")
   const dispatch = useDispatch()
   const history = useHistory()
+  const [emailError, setEmailError] = useState("")
   const [showButtonSpinner, setShowButtonSpinner] = useState(false)
 
   const handleSubmit = function (event) {
     event.preventDefault()
-    setShowButtonSpinner(true)
-    axios
-      .post("/api/users/login", {
-        email,
-        password,
-      })
-      .then((newUser) => {
-        localStorage.setItem("token", newUser.data.token)
-        dispatch(
-          getCurrentUser({
-            id: newUser.data.user.id,
-            isAdmin: newUser.data.user.isAdmin,
-          })
-        )
-        if (newUser.data.user.isAdmin) history.push("/")
-        else history.goBack()
-      })
-      .catch((error) => {
-        setShowButtonSpinner(false)
-        setError(error.response.data)
-      })
+    if (formValidation()) {
+      setShowButtonSpinner(true)
+      axios
+        .post("/api/users/login", {
+          email,
+          password,
+        })
+        .then((newUser) => {
+          localStorage.setItem("token", newUser.data.token)
+          dispatch(
+            getCurrentUser({
+              id: newUser.data.user.id,
+              isAdmin: newUser.data.user.isAdmin,
+            })
+          )
+          if (newUser.data.user.isAdmin) history.push("/")
+          else history.goBack()
+        })
+        .catch((error) => {
+          setShowButtonSpinner(false)
+          setError(error.response.data)
+        })
+    }
+  }
+
+  const formValidation = () => {
+    setEmailError("")
+    const elem = document.getElementsByTagName("Input")[1]
+    if (!validateEmail(email)) {
+      elem.className = "invalid-sign-up-or-log-in", setEmailError("A valid Email is Required")
+    }
+    return (validateEmail(email))
   }
 
   React.useEffect(() => {
@@ -60,6 +73,7 @@ const Login = () => {
           name="email"
           onChange={(event) => setEmail(event.target.value)}
         />
+        <div className="sign-up-or-log-in-login-error">{emailError}</div>
         <label>Password</label>
         <input
           type="password"

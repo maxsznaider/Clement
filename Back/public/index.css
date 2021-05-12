@@ -426,9 +426,8 @@ a hr {
   width: 350px;
   padding: 0.9em;
   font-size: 0.9em;
-  border: none;
+  margin-bottom: 1px;
   border: rgb(128, 128, 128) solid 1px;
-  margin-bottom: 5px;
   font-family: ArcherPro-Light;
 }
 
@@ -436,7 +435,6 @@ a hr {
   display: inline-block;
   width: 100%;
   text-align: left;
-  padding-top: 10px;
   padding-bottom: 5px;
   font-size: 0.9em;
 }
@@ -1208,4 +1206,26 @@ a hr {
   margin: 0 auto;
   -webkit-animation: spin 1s linear infinite; /* Safari */
   animation: spin 1s linear infinite;
+}
+
+
+/* AGREGADOS */
+
+.invalid-sign-up-or-log-in {
+  outline: none;
+  width: 350px;
+  padding: 0.9em;
+  font-size: 0.9em;
+  font-family: ArcherPro-Light;
+  border: rgb(226, 137, 137) solid 1px;
+  background-color: rgb(255, 227, 227);
+  color: rgb(226, 137, 137) solid 1px;
+}
+
+.sign-up-or-log-in-login-error{
+  height: 13px;
+  font-size: 12px;
+  font-weight:bolder;
+  color: rgb(226, 137, 137);
+  text-align: center;
 }

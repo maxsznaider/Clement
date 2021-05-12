@@ -40,7 +40,6 @@ const SingleProduct = (props) => {
       )
       existingItem && console.log(existingItem.quantity)
       if (existingItem) newQuantity = existingItem.quantity + quantity
-      console.log(newQuantity)
       dispatch(
         addToStoreCart({
           name: product.name,
