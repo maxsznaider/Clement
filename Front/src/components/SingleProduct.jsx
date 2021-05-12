@@ -38,9 +38,7 @@ const SingleProduct = (props) => {
       let existingItem = currentCartItems.find(
         (cartItem) => cartItem.productId === product.id
       )
-      existingItem && console.log(existingItem.quantity)
       if (existingItem) newQuantity = existingItem.quantity + quantity
-      console.log(newQuantity)
       dispatch(
         addToStoreCart({
           name: product.name,

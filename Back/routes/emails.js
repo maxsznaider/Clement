@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
     <style>
     @font-face {
         font-family: "BonVivant-Regular";
-        src: url("Sonneta Script.otf");
+        src: url("Fonts/Sonneta Script.otf");
       }
     h1  {
         font-family: "BonVivant-Regular";
@@ -55,7 +55,7 @@ router.post("/", (req, res) => {
         to: `${req.body.fullname} <${req.body.mailto}>`,
         subject: `Orden de compra N: ${req.body.transactionId}`,
         html: htmlTemplate,
-        attachements: [{filename: "../public/LogoClement.png"}]
+        attachements: [{filename: "images/LogoClement.png"}]
     }
 
     transporter.sendMail(mail, (err, data) => {

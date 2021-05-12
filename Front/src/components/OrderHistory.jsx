@@ -12,7 +12,6 @@ const OrderHistory = () => {
       axios
         .get("/api/transactions/" + currentUser.id)
         .then(({ data }) => {
-          console.log(data)
           data.reverse()
           setOrderHistory(data)
         })

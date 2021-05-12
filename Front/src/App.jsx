@@ -27,17 +27,12 @@ const App = () => {
   const currentUser = useSelector((state) => state.currentUser)
   const currentCart = useSelector((state) => state.currentCart)
   const currentCartItems = useSelector((state) => state.currentCartItems)
-  const types = useSelector((state) => state.types)
-  const years = useSelector((state) => state.years)
-  const countries = useSelector((state) => state.countries)
-
   const token = localStorage.getItem("token")
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (!currentUser && token) {
       axios.get(`/api/users/private/${token}`).then((user) => {
-        console.log(user)
         dispatch(
           getCurrentUser({ id: user.data.id, isAdmin: user.data.isAdmin })
         )
@@ -82,7 +77,6 @@ const App = () => {
         localStorage.getItem("localStorageCart")
       )
       if (localStorageItems && localStorageItems.length) {
-        console.log("PEDIDO AXIOS")
         axios
           .post("/api/transactionitems/localstorage", {
             array: localStorageItems,

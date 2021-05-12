@@ -3,9 +3,7 @@ import axios from "axios"
 import { useHistory } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import {
-  removeFromStoreCart,
-  changeQuantityInStoreCart,
+import {  removeFromStoreCart, changeQuantityInStoreCart,
 } from "../store/currentCartItems"
 
 const Cart = () => {
@@ -17,12 +15,12 @@ const Cart = () => {
   React.useEffect(() => {
     setTotal(
       currentCartItems &&
-        currentCartItems.reduce(
-          (accumulator, currentValue) =>
-            accumulator +
-            Number(currentValue.price) * Number(currentValue.quantity),
-          0
-        )
+      currentCartItems.reduce(
+        (accumulator, currentValue) =>
+          accumulator +
+          Number(currentValue.price) * Number(currentValue.quantity),
+        0
+      )
     )
   }, [currentCartItems])
 
@@ -39,46 +37,51 @@ const Cart = () => {
   }
 
   const changeQuantity = function (cartItem, quantity) {
-    quantity = Number(quantity)
-    let { id, productId } = cartItem
-    if (quantity === 0) removeFromCart(cartItem)
     if (quantity > 0) {
-      if (!currentUser)
-        dispatch(
-          changeQuantityInStoreCart({
-            productId,
-            quantity,
-          })
-        )
-      else
-        axios
-          .put("/api/transactionitems/quantity", {
-            id: id,
-            quantity: quantity,
-          })
-          .then(() =>
-            dispatch(
-              changeQuantityInStoreCart({
-                productId,
-                quantity,
-              })
-            )
+      quantity = Number(quantity)
+      let { id, productId } = cartItem
+      if (quantity === 0) removeFromCart(cartItem)
+      if (quantity > 0) {
+        if (!currentUser)
+          dispatch(
+            changeQuantityInStoreCart({
+              productId,
+              quantity,
+            })
           )
+        else
+          axios
+            .put("/api/transactionitems/quantity", {
+              id: id,
+              quantity: quantity,
+            })
+            .then(() =>
+              dispatch(
+                changeQuantityInStoreCart({
+                  productId,
+                  quantity,
+                })
+              )
+            )
+      }
+    }
+    else {
+      quantity = 1
     }
   }
 
-// useInput que quizás sirve para los items del carrito
+  // useInput que quizás sirve para los items del carrito
 
   const useInput = (name, incomingValue) => {
     const [value, setValue] = useState(incomingValue);
 
     const onChange = ({ target: { value } }) => {
-        setFormError("")
-        setValue(value)
+      setFormError("")
+      setValue(value)
     };
 
     return { value, onChange, name };
-};
+  };
 
   return (
     <>
@@ -106,9 +109,10 @@ const Cart = () => {
                 <div className="column-2">{"$" + cartItem.price}</div>
                 <div className="column-3">
                   <input
-                    type="text"
-                    onBlur={(e) => changeQuantity(cartItem, e.target.value)}
-                    placeholder={cartItem.quantity}
+                    type="number"
+                    onKeyDown={(event)=>(event.key===38 || event.key===40) ? updateValue(event): event.preventDefault()}
+                    onChange={(event) => changeQuantity(cartItem, event.target.value)}
+                    value={cartItem.quantity}
                   />
                   <img
                     onClick={() => removeFromCart(cartItem)}

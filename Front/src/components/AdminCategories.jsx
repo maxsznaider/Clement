@@ -28,7 +28,6 @@ const AdminCategories = () => {
     axios
       .put(`/api/categories/${route}/${id}/${isAdmin}`, { name })
       .then((category) => {
-        console.log(name)
         dispatch(stateFunc(category.data))
       })
     setName()

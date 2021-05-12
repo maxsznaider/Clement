@@ -38,7 +38,6 @@ const AdminProduct = () => {
     const sizeNumber = Number(size);
     const stockNumber = Number(stock);
     const priceNumber = Number(price);
-    console.log(currentProduct.id)
 
     if (currentProduct.id) {
       axios
@@ -80,7 +79,6 @@ const AdminProduct = () => {
     localStorage.removeItem("currentProduct");
   };
 
-  console.log(currentProduct);
   return (
     <div className="admin-product-edit">
     <form onSubmit={(e) => handleSubmit(e)}>
