@@ -42,7 +42,6 @@ const createTransactionItemLocalStorage = (req, res) => {
         })
             .then((transactionItem) => {
                 if (!transactionItem) {
-                    console.log("Hola")
                     TransactionItem.create(item)
                         .then(transactionItemCreated => transactionItemCreated.setTransaction(req.body.transactionId))
                         .then(transactionItemCreated => transactionItemCreated.setProduct(item.productId))

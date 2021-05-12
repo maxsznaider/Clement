@@ -34,18 +34,13 @@ a hr {
 }
 
 @font-face {
-  font-family: "prueba";
-  src: url("Archer-Bold-Pro.otf");
-}
-
-@font-face {
   font-family: "ArcherPro-Light";
-  src: url("ArcherPro-Light.otf");
+  src: url("fonts/ArcherPro-Light.otf");
 }
 
 @font-face {
   font-family: "BonVivant-Regular";
-  src: url("Sonneta Script.otf");
+  src: url("fonts/Sonneta\ Script.otf");
 }
 
 /* NAVBAR */
@@ -697,7 +692,7 @@ a hr {
   /* background-color: rgb(243, 208, 118); */
 }
 
-.payment-or-address-form input {
+.payment-form input, .address-form input  {
   outline: none;
   width: 350px;
   padding: 0.9em;
@@ -707,11 +702,10 @@ a hr {
   margin-bottom: 5px;
 }
 
-.payment-or-address-form label {
+.payment-form label, .address-form label  {
   display: inline-block;
   width: 100%;
   text-align: left;
-  padding-top: 10px;
   padding-bottom: 5px;
   font-size: 0.9em;
 }

@@ -9,7 +9,7 @@ const Home = () => {
       <div className="home-main-picture">
         <Link to="/search?q=Red&m=Type">
           <div>
-            <img src="home1.jpg"></img>
+            <img src="images/home1.jpg"></img>
             <div className="home-main-tagline">Red Wines</div>
           </div>
         </Link>
@@ -17,7 +17,7 @@ const Home = () => {
       <div className="home-two-picture-row">
         <div>
           <Link to="search?q=Italy&m=Country">
-            <img src="italy.jpg"></img>
+            <img src="images/italy.jpg"></img>
           </Link>
           <div className="home-picture-title">
             Explore Our Exquisite Italian Wines
@@ -25,7 +25,7 @@ const Home = () => {
         </div>
         <div>
           <Link to="/search?q=White&m=Type">
-            <img src="white.jpg"></img>
+            <img src="images/white.jpg"></img>
           </Link>
           <div className="home-picture-title">
             Dive into the Sweetness of White Wines
@@ -33,7 +33,7 @@ const Home = () => {
         </div>
         <div>
           <Link to="search?q=France&m=Country">
-            <img src="french.jpg"></img>
+            <img src="images/french.jpg"></img>
           </Link>
           <div className="home-picture-title">
             Enjoy Our Fine Selection of French Wines

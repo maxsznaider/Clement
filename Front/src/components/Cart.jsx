@@ -3,9 +3,7 @@ import axios from "axios"
 import { useHistory } from "react-router-dom"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import {
-  removeFromStoreCart,
-  changeQuantityInStoreCart,
+import {  removeFromStoreCart, changeQuantityInStoreCart,
 } from "../store/currentCartItems"
 
 const Cart = () => {
@@ -112,8 +110,8 @@ const Cart = () => {
                 <div className="column-3">
                   <input
                     type="number"
-                    onKeyDown={(e)=>(e.key===38 || e.key===40) ? updateValue(e): e.preventDefault()}
-                    onChange={(e) => changeQuantity(cartItem, e.target.value)}
+                    onKeyDown={(event)=>(event.key===38 || event.key===40) ? updateValue(event): event.preventDefault()}
+                    onChange={(event) => changeQuantity(cartItem, event.target.value)}
                     value={cartItem.quantity}
                   />
                   <img

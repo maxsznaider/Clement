@@ -35,7 +35,6 @@ const AdminProducts = () => {
       .delete(`/api/products/admin/delete/${id}/${currentUser.isAdmin}`)
       .then(() => setProducts(products.filter((product) => product.id != id)))
   }
-  console.log(currentUser)
   return (
     <>
       {currentUser.isAdmin ? (

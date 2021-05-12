@@ -8,7 +8,7 @@ const getPayments = (req, res) => {
     }).then((payments) => {
         res.status(200).json(payments)
     }).catch((err) => {
-        console.log(err)
+        console.log("err", err)
         res.sendStatus(400)
     })
 }
@@ -24,8 +24,7 @@ const addPayment = (req, res) => {
                 .then(paymentCreated => paymentCreated.setUser(req.body.userId))
                 .then((paymentCreated) => res.status(201).json(paymentCreated))
         } else {
-                console.log("Tarjeta Existente")
-                res.sendStatus(400)
+                res.status(400).send("Tarjeta Existente")
         }
     })
 }
